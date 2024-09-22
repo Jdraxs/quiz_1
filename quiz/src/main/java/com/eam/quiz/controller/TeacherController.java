@@ -18,29 +18,29 @@ public class TeacherController {
 
     @GetMapping
     public List<Teacher> getAllTeachers() {
-        return teacherService.findAll();
+        return teacherService.findAllTeachers();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Teacher> getTeacherById(@PathVariable Long id) {
-        Optional<Teacher> teacher = teacherService.findById(id);
+        Optional<Teacher> teacher = teacherService.searchTeacher(id);
         return teacher.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Teacher createTeacher(@RequestBody Teacher teacher) {
-        return teacherService.save(teacher);
+    public void createTeacher(@RequestBody Teacher teacher) {
+        teacherService.insertTeacher(teacher);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Teacher> updateTeacher(@PathVariable Long id, @RequestBody Teacher teacherDetails) {
-        Optional<Teacher> teacher = teacherService.findById(id);
+        Optional<Teacher> teacher = teacherService.searchTeacher(id);
         if (teacher.isPresent()) {
             Teacher updatedTeacher = teacher.get();
             updatedTeacher.setName(teacherDetails.getName());
             updatedTeacher.setEmail(teacherDetails.getEmail());
             updatedTeacher.setPhoneNumber(teacherDetails.getPhoneNumber());
-            return ResponseEntity.ok(teacherService.save(updatedTeacher));
+            return ResponseEntity.ok(teacherService.updateTeacher(updatedTeacher));
         }else{
             return ResponseEntity.notFound().build();
         }
@@ -49,8 +49,8 @@ public class TeacherController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Teacher> deleteTeacher(@PathVariable Long id) {
-        if(teacherService.findById(id).isPresent()) {
-            teacherService.deleteById(id);
+        if(teacherService.searchTeacher(id).isPresent()) {
+            teacherService.deleteTeacher(id);
             return ResponseEntity.ok().build();
         }else{
             return ResponseEntity.notFound().build();

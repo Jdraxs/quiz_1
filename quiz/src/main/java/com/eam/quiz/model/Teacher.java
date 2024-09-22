@@ -27,19 +27,17 @@ public class Teacher {
         super();
     }
 
-    public Teacher(int phoneNumber, String name, String email, List<com.eam.quiz.model.Subject> subject) {
+    public Teacher(int phoneNumber, String name, String email) {
         this.phoneNumber = phoneNumber;
         this.name = name;
         this.email = email;
-        Subject = subject;
     }
 
-    public Teacher(long id, int phoneNumber, String name, String email, List<com.eam.quiz.model.Subject> subject) {
+    public Teacher(long id, int phoneNumber, String name, String email) {
         this.id = id;
         this.phoneNumber = phoneNumber;
         this.name = name;
         this.email = email;
-        Subject = subject;
     }
 
     public long getId() {

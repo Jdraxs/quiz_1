@@ -17,30 +17,30 @@ public class SubjectController {
 
     @GetMapping
     public List<Subject> getAllSubjects() {
-        return subjectService.findAll();
+        return subjectService.findAllSubjects();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Subject> getSubjectById(@PathVariable Long id) {
-        Optional<Subject> subject = subjectService.findById(id);
+        Optional<Subject> subject = subjectService.searchSubject(id);
         return subject.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public Subject createSubject(@RequestBody Subject subject) {
-        return subjectService.save(subject);
+        return subjectService.insertSubject(subject);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Subject> updateSubject(@PathVariable Long id, @RequestBody Subject subjectDetails) {
-        Optional<Subject> subject = subjectService.findById(id);
+        Optional<Subject> subject = subjectService.searchSubject(id);
         if (subject.isPresent()) {
             Subject updatedSubject = subject.get();
             updatedSubject.setName(subjectDetails.getName());
             updatedSubject.setDescription(subjectDetails.getDescription());
             updatedSubject.setNumberClasses(subjectDetails.getNumberClasses());
             updatedSubject.setCode(subjectDetails.getCode());
-            return ResponseEntity.ok(subjectService.save(updatedSubject));
+            return ResponseEntity.ok(subjectService.updateSubject(updatedSubject));
         }else{
             return ResponseEntity.notFound().build();
         }
@@ -49,8 +49,8 @@ public class SubjectController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Subject> deleteSubject(@PathVariable Long id) {
-        if(subjectService.findById(id).isPresent()) {
-            subjectService.deleteById(id);
+        if(subjectService.searchSubject(id).isPresent()) {
+            subjectService.deleteSubject(id);
             return ResponseEntity.ok().build();
         }else{
             return ResponseEntity.notFound().build();
