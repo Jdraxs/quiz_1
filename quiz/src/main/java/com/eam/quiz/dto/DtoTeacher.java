@@ -1,14 +1,18 @@
 package com.eam.quiz.dto;
 
-import com.eam.quiz.model.Subject;
-
-import java.util.List;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public class DtoTeacher {
+    @NotBlank(message = "El Campo No Puede Estar Vacio")
+    @Size(min = 10, message = "El Numero Debe Tener Una Cantidad Valida")
     private int phoneNumber;
+    @NotBlank(message = "El Campo No Puede Estar Vacio")
     private String name;
+    @NotBlank(message = "El Campo No Puede Estar Vacio")
+    @Email
     private String email;
-    private List<Subject> Subject;
 
     public DtoTeacher() {
     }
@@ -34,10 +38,4 @@ public class DtoTeacher {
         this.email = email;
     }
 
-    public List<Subject> getSubject() {
-        return Subject;
-    }
-    public void setSubject(List<Subject> subject) {
-        Subject = subject;
-    }
 }

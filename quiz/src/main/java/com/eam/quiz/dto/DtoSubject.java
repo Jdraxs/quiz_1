@@ -1,14 +1,21 @@
 package com.eam.quiz.dto;
 
+import jakarta.validation.constraints.*;
 import com.eam.quiz.model.Teacher;
 
 public class DtoSubject {
 
+    @NotBlank(message = "El Campo No Puede Estar Vacio")
     private String name;
+    @NotBlank(message = "El Campo No Puede Estar Vacio")
     private String description;
+    @NotBlank(message = "El Campo No Puede Estar Vacio")
     private int numberClasses;
+    @NotBlank(message = "El Campo No Puede Estar Vacio")
+    @Size(min = 6, message = "El Codigo Debe Constar De Minimo 6 Caracteres")
     private String code;
-    private Teacher teacher;
+    @NotBlank(message = "El Campo No Puede Estar Vacio")
+    private long teacherId;
 
     public DtoSubject() {
     }
@@ -41,10 +48,10 @@ public class DtoSubject {
         this.code = code;
     }
 
-    public Teacher getTeacher() {
-        return teacher;
+    public long getTeacherId() {
+        return teacherId;
     }
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
+    public void setTeacherId(long teacherId) {
+        this.teacherId = teacherId;
     }
 }
