@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
@@ -17,13 +18,18 @@ public class SubjectController {
 
     @GetMapping
     public List<Subject> getAllSubjects() {
-        return subjectService.findAllSubjects();
+        return subjectService.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Subject> getSubjectById(@PathVariable Long id) {
-        Optional<Subject> subject = subjectService.searchSubject(id);
-        return subject.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        try{
+            Optional<Subject> subject = subjectService.findById(id);
+            return subject.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        }   catch (NullPointerException e) {
+            System.out.println("There Is Not A Subject With That ID");
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping
@@ -33,27 +39,29 @@ public class SubjectController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Subject> updateSubject(@PathVariable Long id, @RequestBody Subject subjectDetails) {
-        Optional<Subject> subject = subjectService.searchSubject(id);
-        if (subject.isPresent()) {
+        try{
+            Optional<Subject> subject = subjectService.findById(id);
             Subject updatedSubject = subject.get();
             updatedSubject.setName(subjectDetails.getName());
             updatedSubject.setDescription(subjectDetails.getDescription());
             updatedSubject.setNumberClasses(subjectDetails.getNumberClasses());
             updatedSubject.setCode(subjectDetails.getCode());
+            updatedSubject.setTeacher(subjectDetails.getTeacher());
             return ResponseEntity.ok(subjectService.updateSubject(updatedSubject));
-        }else{
-            return ResponseEntity.notFound().build();
+        } catch (NullPointerException | NoSuchElementException e) {
+            System.out.println("There Is Not A Subject With That ID");
         }
-
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Subject> deleteSubject(@PathVariable Long id) {
-        if(subjectService.searchSubject(id).isPresent()) {
-            subjectService.deleteSubject(id);
+        try{
+            subjectService.deleteById(id);
             return ResponseEntity.ok().build();
-        }else{
-            return ResponseEntity.notFound().build();
+        } catch (NullPointerException | NoSuchElementException e) {
+            System.out.println("There Is Not A Subject With That ID");
         }
+        return ResponseEntity.notFound().build();
     }
 }

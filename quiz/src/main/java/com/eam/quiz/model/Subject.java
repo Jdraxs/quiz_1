@@ -37,6 +37,13 @@ public class Subject {
         this.teacher = teacher;
     }
 
+    public Subject(String name, String description, int numberClasses, String code) {
+        this.name = name;
+        this.description = description;
+        this.numberClasses = numberClasses;
+        this.code = code;
+    }
+
     public Subject(long id, String name, String description, int numberClasses, String code, Teacher teacher) {
         this.id = id;
         this.name = name;
@@ -44,6 +51,14 @@ public class Subject {
         this.numberClasses = numberClasses;
         this.code = code;
         this.teacher = teacher;
+    }
+
+    public Subject(long id, String name, String description, int numberClasses, String code) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.numberClasses = numberClasses;
+        this.code = code;
     }
 
     public long getId() {
